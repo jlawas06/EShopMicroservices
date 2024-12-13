@@ -12,6 +12,16 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddCarter();
 
+builder.Services.AddMarten(opts =>
+{
+    opts.Connection(builder.Configuration.GetConnectionString("BasketDB")!);
+    opts.Schema.For<ShoppingCart>().Identity(x => x.Username);
+}).UseLightweightSessions();
+
+//if (builder.Environment.IsDevelopment())
+//{
+//    builder.Services.InitializeMartenWith<CatalogInitialData>();
+//}
 
 var app = builder.Build();
 
